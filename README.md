@@ -12,11 +12,11 @@
 curl -fsSL https://github.com/Luis-yl/helixmesh-releases/releases/latest/download/install.sh | bash
 ```
 
-这会做：
+安装会做：
 
 - 下载最新 `helixmesh-bundle.tgz` 解压到 `~/.helixmesh/`
 - 软链 `helixmesh` 命令到 `~/.local/bin/`
-- 全局装 `evolver` (v1.48.0 MIT fork) + `helixmesh-gep-mcp` 两个二进制
+- 装好运行时引擎和 MCP 服务器（命令行可用）
 
 如果 `~/.local/bin` 不在你的 PATH，install.sh 会提示你加一行到 `~/.zshrc` / `~/.bashrc`：
 
@@ -44,7 +44,7 @@ helixmesh init --hub http://100.112.9.119:4000
 1. 跟 hub 打 hello，领一个 `node_id` + `node_secret`
 2. 在项目目录写 `.env`（hub URL / node 身份）
 3. 在家目录写 node 身份文件（`node_id` / `node_secret`）
-4. 后台拉起 `evolver --loop`（持续巡逻 + 心跳 + 自动产胶囊）
+4. 后台拉起 helixmesh agent loop（持续巡逻 + 心跳 + 自动产胶囊）
 
 ## 验证装好了
 
@@ -54,7 +54,7 @@ helixmesh init --hub http://100.112.9.119:4000
 ==============================================================
   HelixMesh Agent 状态
 ==============================================================
-✓ evolver: /usr/local/bin/evolver  v1.48.0
+✓ helixmesh agent (v1.48.0)
 ✓ 全局 hooks 已注册：claude-code
 ✓ 项目 .env：/Users/luis/my-project/.env
     A2A_HUB_URL=http://100.112.9.119:4000
@@ -63,21 +63,21 @@ helixmesh init --hub http://100.112.9.119:4000
 ✓ 家目录 node_id: node_xxxxxxxxxxxx
 ✓ 家目录 node_secret: 已存在（mode 600）
 ✓ hub 在线：http://100.112.9.119:4000
-✓ evolver --loop: pid 12345
+✓ agent loop: pid 12345
     last_heartbeat: 2026-04-29T03:11:09.456Z
 ✓ 当前项目胶囊：N 条（assets/gep/capsules.json）
 ==============================================================
 ```
 
-如果显示 `⚠️ evolver --loop 未运行`，跑 `helixmesh restart` 起 loop。
+如果显示 `⚠️ agent loop 未运行`，跑 `helixmesh restart` 起 loop。
 
 ## 常用命令
 
 ```bash
 helixmesh status    # 健康检查
-helixmesh restart   # 重启 evolver --loop
+helixmesh restart   # 重启 agent loop
 helixmesh tail      # 实时看 agent 日志
-helixmesh stop      # 停 evolver --loop
+helixmesh stop      # 停 agent loop
 helixmesh health    # 全面诊断（CI/cron 友好，退出码反映状态）
 helixmesh inspect   # dump 静态配置（敏感字段打码）
 helixmesh help      # 完整帮助
@@ -102,13 +102,13 @@ curl -fsSL https://github.com/Luis-yl/helixmesh-releases/releases/latest/downloa
 装特定版本：
 
 ```bash
-HELIXMESH_VERSION=v0.1.0 bash <(curl -fsSL https://github.com/Luis-yl/helixmesh-releases/releases/download/v0.1.0/install.sh)
+HELIXMESH_VERSION=v0.1.1 bash <(curl -fsSL https://github.com/Luis-yl/helixmesh-releases/releases/download/v0.1.1/install.sh)
 ```
 
 ## 卸载
 
 ```bash
-helixmesh uninstall              # 删全局 evolver / hooks 注册
+helixmesh uninstall              # 删全局二进制 + hooks 注册
 helixmesh uninstall --purge      # 同上 + 删家目录身份文件
 rm -rf ~/.helixmesh              # 删 install.sh 装的 bundle
 rm ~/.local/bin/helixmesh        # 删命令软链
@@ -151,11 +151,4 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 
 ## License
 
-bundle 内含两种许可证：
-
-| 内容 | License |
-|---|---|
-| `evolver` (v1.48.0 fork) / `helixmesh-gep-mcp` / `hm-agent.sh` / `install.sh` | MIT |
-| 三个 hook .js (`runtime/evolver-hooks/`) | GPL-3.0-or-later（源自 evolver v1.69.8） |
-
-详见 bundle 内 `runtime/evolver-hooks/LICENSE-GPL-3.0.txt`。
+bundle 内主体（CLI / 引擎 / MCP / 脚本）MIT 许可。其中三个集成 hook 脚本为 GPL-3.0-or-later，bundle 内附 LICENSE 文件说明。
