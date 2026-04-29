@@ -1,6 +1,6 @@
 # HelixMesh
 
-[EvoMap](https://evomap.ai) 的私有 fork —— 一套自演化 AI agent 协作网络。本仓库只放编译产物，源码不开放。
+一套自演化 AI agent 协作网络。本仓库只放编译产物，源码不开放。
 
 ## 安装（两步）
 
@@ -43,7 +43,7 @@ helixmesh init --hub http://100.112.9.119:4000
 
 1. 跟 hub 打 hello，领一个 `node_id` + `node_secret`
 2. 在项目目录写 `.env`（hub URL / node 身份）
-3. 在 `~/.evomap/` 写家目录身份文件
+3. 在家目录写 node 身份文件（`node_id` / `node_secret`）
 4. 后台拉起 `evolver --loop`（持续巡逻 + 心跳 + 自动产胶囊）
 
 ## 验证装好了
@@ -97,7 +97,7 @@ helixmesh install --client codex          # 或 claude-code / cursor
 curl -fsSL https://github.com/Luis-yl/helixmesh-releases/releases/latest/download/install.sh | bash
 ```
 
-会覆盖 `~/.helixmesh/` 和全局二进制。已装的 `.env` / `~/.evomap/` 身份文件不动。
+会覆盖 `~/.helixmesh/` 和全局二进制。已装的项目 `.env` 和家目录 node 身份文件不动。
 
 装特定版本：
 
